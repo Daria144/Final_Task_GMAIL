@@ -1,5 +1,6 @@
 package project.pages;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,6 +17,15 @@ public class LoginPage extends BasePage{
     private WebElement loginInput;
     @FindBy(xpath = "//*[@id=\"password\"]//input")
     private WebElement passwordInput;
-    
+
+    public void inputLogin(String login){
+        loginInput.sendKeys(login);
+        loginInput.sendKeys(Keys.ENTER);
+    }
+
+    public void inputPassword(String pwd){
+        passwordInput.sendKeys(pwd);
+        passwordInput.sendKeys(Keys.ENTER);
+    }
 
 }
