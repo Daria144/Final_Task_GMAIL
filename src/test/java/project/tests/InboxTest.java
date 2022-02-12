@@ -6,6 +6,9 @@ import project.context.LoginContext;
 
 public class InboxTest {
 
+    /**
+     *
+     */
     @Test
     public void allElementsAreDisplayed(){
         InboxContext.allElementsAreDisplayed();

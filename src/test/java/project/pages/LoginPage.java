@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage extends BasePage{
     public WebDriver driver;
@@ -14,6 +13,9 @@ public class LoginPage extends BasePage{
         PageFactory.initElements(driver, this);
         this.driver = driver; }
 
+    /**
+     * Elements of Login Page - first step
+     */
     @FindBy(id = "identifierId")
     private WebElement loginInput;
     @FindBy(xpath = "//div[@class=\"PrDSKc\"]/button")
@@ -23,6 +25,9 @@ public class LoginPage extends BasePage{
     @FindBy(xpath = "//*[@id=\"identifierNext\"]//button")
     private WebElement nextLoginButton;
 
+    /**
+     * Elements of Login Page - last step
+     */
     @FindBy (id = "profileIdentifier")
     private WebElement profileID;
     @FindBy(xpath = "//*[@id=\"password\"]//input")
@@ -34,8 +39,10 @@ public class LoginPage extends BasePage{
     @FindBy(xpath = "//*[@id=\"passwordNext\"]//button")
     private WebElement nextPasswordButton;
 
-
-
+    /**
+     * enter login tests
+     * @param login
+     */
     public void inputLoginAndPressEnter(String login){
         loginInput.sendKeys(login);
         loginInput.sendKeys(Keys.ENTER);
@@ -45,7 +52,10 @@ public class LoginPage extends BasePage{
         nextLoginButton.click();
     }
 
-
+    /**
+     * enter password tests
+     * @param pwd
+     */
     public void inputPasswordAndPressEnter(String pwd){
         passwordInput.sendKeys(pwd);
         passwordInput.sendKeys(Keys.ENTER);
@@ -55,5 +65,63 @@ public class LoginPage extends BasePage{
         nextPasswordButton.click();
     }
 
+    /**
+     *return elements from FirstPage to be displayed
+     */
+
+    public WebElement[] getElementsOnFirstPageToBeDisplayed(){
+        WebElement[] elements = new WebElement[]{
+                loginInput,
+                forgetLoginButton,
+                createAccountButton,
+                nextLoginButton
+
+        };
+        return elements;
+
+    }
+
+    /**
+     *return elements from FirstPage to be clickable
+     */
+
+    public WebElement[] getElementsOnFirstPageToBeClickable(){
+        WebElement[] elements = new WebElement[]{
+                forgetLoginButton,
+                createAccountButton,
+                nextLoginButton
+
+        };
+        return elements;
+
+    }
+
+    /**
+     *return elements from LastPage to be displayed
+     */
+
+    public WebElement[] getElementsOnLastPageToBeDisplayed(){
+        WebElement[] elements = new WebElement[]{
+                profileID,
+                passwordInput
+
+        };
+        return elements;
+
+    }
+
+    /**
+     *return elements from LastPage to be clickable
+     */
+
+    public WebElement[] getElementsOnLastPageToBeClickable(){
+        WebElement[] elements = new WebElement[]{
+                showPasswordCheckbox,
+                forgetPasswordButton,
+                nextLoginButton
+        };
+        return elements;
+
+    }
 
 }
