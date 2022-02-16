@@ -4,13 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import project.pages.BasePage;
 
-import static project.pages.InboxPage.SendEmailDialog.*;
-import static project.pages.InboxPage.SideMenu.*;
+import java.util.List;
 
 public class InboxPage extends BasePage {
 
@@ -18,57 +16,60 @@ public class InboxPage extends BasePage {
         super(driver);
     }
 
-    @FindBy(xpath = "(//tr[@role=\"row\"])[1]")
+    @FindBy(xpath = "(//div[@role=\"main\"]//tr[@role=\"row\"])[1]")
     private WebElement emailFirst;
     @FindBy(xpath = "//div[@class=\"z0\"]/div[@role=\"button\"]")
     private WebElement composeEmailButton;
     @FindBy(xpath = "//div[@data-message-id]//div[@dir=\"ltr\"]\n")
-    private WebElement draftMessage;
-    @FindBy(xpath = "//*[@id=\"link_undo\"]")
-    private WebElement undoButton;
-    /*   @FindBy(xpath = "(//tr[@role=\"row\"])[1]//div[@role=\"checkbox\"]")
-//    private WebElement sentEmailCheckbox;
-//    @FindBy(xpath = "(//tr[@role=\"row\"])[1]//span[@aria-label=\"Not starred\"]")
-//    private WebElement sentEmailStar;
-//    @FindBy(xpath = "//*[@name=\"to\"]")
-//    private WebElement recipientField;
-//    @FindBy(xpath = "//*[@role=\"textbox\"]")
-//    private WebElement emailBody;
-//    //@FindBy(xpath = "//*[@data-tooltip=\"Send \u202A(⌘Enter)\u202C\"]")
-//    private WebElement sendEmailButton;
-//    @FindBy(xpath = "//div[@data-tooltip-align=\"r\"]/div//span")
-//    private WebElement inboxMessageCount;
-//    @FindBy(xpath = "//td[@role=\"gridcell\"]//img[@src]")
-//    private WebElement attachedFileInInbox;
-//    @FindBy(xpath = "//td[@role=\"gridcell\"]//img[@src]/../../../..")
-//    private WebElement emailWithAttachedFile;
-//    @FindBy(xpath ="//*[@data-tooltip=\"Завантажити\"]")
-//    private WebElement downloadFileButton;
-//    @FindBy(xpath = "(//table[@role=\"presentation\"]//span[@role=\"link\"] )[1]")
-//    private WebElement replyButton;
-//    @FindBy(xpath = "(//table[@role=\"presentation\"]//span[@role=\"link\"] )[2]")
-//    private WebElement forwardButton;
-//    @FindBy(xpath = "//input[@aria-label=\"Пошук у пошті\"]")
-//    private WebElement searchInput;searchInput*/
-    //SendEmailDialog page
+    private WebElement draftMessageBody;
+    @FindBy(xpath = "(//span[@data-tooltip=\"Із зірочкою\"])[1]")
+    private WebElement emailFirstStar;
+    @FindBy(xpath = "(//span[@data-tooltip=\"Без зірочки\"])[1]")
+    private WebElement emailFirstNoStar;
+    @FindBy(xpath = "(//div[@role=\"main\"]//td[@role=\"gridcell\"]/div/text())[6]")
+    private static String snoozedDateText;
+    //SendEmailDialog
     @FindBy(xpath = "//*[contains(@data-tooltip,'На весь екран')]")
-    private  WebElement fullScreen;
+    protected static WebElement fullScreen;
     @FindBy(xpath = "//*[contains(@data-tooltip,'Вийти з повноекранного режиму')]")
-    private  WebElement exitFullScreen;
+    protected static WebElement exitFullScreen;
     @FindBy(xpath = "//*[contains(@data-tooltip,'Зберегти та закрити')]")
-    private  WebElement crossButton;
+    protected static WebElement crossButton;
     @FindBy(xpath = "//*[@name=\"to\"]")
-    private  WebElement recipientField;
+    protected static WebElement recipientField;
     @FindBy(xpath = "//*[@role=\"textbox\"]")
-    private  WebElement emailBody;
+    protected static WebElement emailBody;
     @FindBy(xpath = "//tbody//div[contains(@data-tooltip,'Надіслати')]")
-    private  WebElement sendButton;
+    protected static WebElement sendButton;
     @FindBy(xpath = "//div[1]/div/div[3]/div/div/div[2]/div[@role=\"button\"]")
-    private  WebElement popupOfEmailSent;
+    protected static By popupOfEmailSent;
     @FindBy(xpath = "//div[@role=\"alertdialog\"]")
-    private  WebElement alertMessage;
+    protected static WebElement alertMessage;
     @FindBy(xpath = "//div[@style=\"position: absolute;\"]//div[@role=\"dialog\"]")
-    private   WebElement emailDialog;
+    protected  static WebElement emailDialog;
+    @FindBy(xpath = "//*[@id=\"link_undo\"]")
+    protected static  WebElement undoButton;
+    @FindBy(xpath = "//form/div/div/span[@email]")
+    protected static WebElement recipientFilledData;
+    @FindBy(xpath = "//*[@data-tooltip=\"Інші параметри надсилання\"]")
+    protected static WebElement moreSendOptions;
+    @FindBy(xpath = "//*[@selector=\"scheduledSend\"]")
+    protected static WebElement scheduleEmail;
+    @FindBy(xpath = "(//span[@role=\"heading\"]/../..//div[@role=\"menuitem\"])[1]")
+    protected static WebElement tomorrowMorningSchedule;
+    @FindBy(xpath = "((//span[@role=\"heading\"]/../..//div[@role=\"menuitem\"])[1]/div)[2]")
+    protected static WebElement scheduleDate;
+    //SideMenu
+    @FindBy(xpath = "//div[@data-tooltip=\"Чернетки\"]")
+    protected static WebElement draftSection;
+    @FindBy(xpath = "//div[@data-tooltip=\"Чернетки\"]/div/div/div")
+    protected static WebElement draftCount;
+    @FindBy(xpath = "//div[@data-tooltip=\"Із зірочкою\"]")
+    protected static WebElement staredSection;
+    @FindBy(xpath = "//*[@data-tooltip=\"Заплановано\"]")
+    protected static WebElement snoozedSection;
+    @FindBy(xpath = "//*[@data-tooltip=\"Заплановано\"]/div/div/div")
+    protected static WebElement snoozedCount;
 
     public void openFullScreenDialog(){
         fullScreen.click();
@@ -77,8 +78,9 @@ public class InboxPage extends BasePage {
         exitFullScreen.click();
     }
     public void fillInRecipientField(String login){
+        recipientField.click();
         recipientField.sendKeys(login);
-        recipientField.sendKeys();
+        //recipientField.sendKeys();
     }
     public void fillInEmailBody(String body){
         emailBody.sendKeys(body);
@@ -90,7 +92,7 @@ public class InboxPage extends BasePage {
         crossButton.click();
     }
     public String getDraftsText(){
-        return draftMessage.getText();
+        return draftMessageBody.getText();
     }
     public void clickOnUndoButton(){
         undoButton.click();
@@ -99,21 +101,29 @@ public class InboxPage extends BasePage {
         composeEmailButton.click();
     }
     public boolean popupOfEmailSentIsDisplayed() {
-        return popupOfEmailSent.isDisplayed();
+        WebDriverWait driverWait=new WebDriverWait(driver,20);
+        WebElement emailPopup = driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[1]/div/div[3]/div/div/div[2]/div[@role=\"button\"]")));
+        return emailPopup.isDisplayed();
     }
     public boolean alertMessageIsDisplayed(){
         return alertMessage.isDisplayed();
     }
+    public WebElement waitForDraftsSectionDisplayed(){
+        WebDriverWait driverWait=new WebDriverWait(driver,20);
+        WebElement draftSection = driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By
+                        .xpath("//div[@data-tooltip=\"Чернетки\"]")));
+        return draftSection;
+    }
     public static int getDraftsCount() {
-        return Integer.parseInt(draftEl.getText());
+        String countText=draftCount.getText();
+            return Integer.parseInt(countText);
+
     }
     public void openFirstEmailInList(){
         emailFirst.click();
     }
-    public boolean emailDialogIsOpened(){
-        return emailDialog.isDisplayed();
-    }
-
     public WebElement waitForEmailPopupOpened(){
         WebDriverWait driverWait=new WebDriverWait(driver,20);
         WebElement emailPopup = driverWait
@@ -121,6 +131,63 @@ public class InboxPage extends BasePage {
                         .xpath("//div[@role=\"dialog\"]")));
         return emailPopup;
     }
+    public String getRecipientOfEmail(){
+        return recipientFilledData.getText();
+    }
+    public String getEmailBodyText(){
+        return emailBody.getText();
+    }
+    public void clickOnEmailFirstStar(){
+        emailFirstStar.click();
+    }
+    public void clickOnEmailFirstNoStar(){
+        emailFirstNoStar.click();
+    }
+    public void openDraftSection(){
+        draftSection.click();
+    }
+    public void openStaredSection(){
+        staredSection.click();
+    }
+    public List<WebElement> getStaredEmails(){
+        List<WebElement> staredEmailList = driver.findElements(By
+                .xpath("//tbody//span[@aria-label=\"Із зірочкою\"]"));
+        return staredEmailList;
+    }
+    public void openMoreSendOptions(){
+        moreSendOptions.click();
+    }
+    public void scheduleEmailSend(){
+        scheduleEmail.click();
+    }
+    public WebElement waitForSchedulePopupOpened(){
+        WebDriverWait driverWait=new WebDriverWait(driver,20);
+        WebElement schedulePopup = driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By
+                        .xpath("//*[@role=\"dialog\"]//span[@role=\"heading\"]")));
+        return schedulePopup;
+    }
+    public void selectScheduleDate(){
+        tomorrowMorningSchedule.click();
+    }
+    public String getScheduleDateText(){
+        return scheduleDate.getText();
+    }
+    public void openSnoozedSection(){
+        snoozedSection.click();
+    }
+    public static int getSnoozedCount() {
+        return Integer.parseInt(snoozedCount.getText());
+    }
+    public static String getSnoozedDateText(){
+        return snoozedDateText;
+    }
+    public void waitForSnoozedPopupIsClosed(){
+        WebDriverWait wait = new WebDriverWait(driver, 5000); // 5 seconds timeout
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By
+                .xpath("//*[@role=\"dialog\"]//span[@role=\"heading\"]")));
+    }
+
 
 
 }

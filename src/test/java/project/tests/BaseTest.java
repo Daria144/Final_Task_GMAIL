@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class BaseTest {
     public static WebDriver driver;
 
-    @BeforeMethod
+    @BeforeTest
             (alwaysRun = true)
     public static void launch(){
         System.setProperty(ConfigProperties.getProperty("chromeKey"),ConfigProperties.getProperty("chromedriver"));
@@ -43,7 +43,7 @@ public class BaseTest {
 
 
 
-    @AfterMethod
+    @AfterTest
             (alwaysRun = true)
     public void turnDown(){
         driver.quit();

@@ -3,14 +3,13 @@ package project.pages.InboxPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import project.pages.BasePage;
 
-public class SendEmailDialog {
-    public WebDriver driver;
+public class SendEmailDialog extends BasePage {
 
     public SendEmailDialog (WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.driver = driver; }
+        super(driver);
+    }
 
     @FindBy(xpath = "//*[contains(@data-tooltip,'На весь екран')]")
     protected static WebElement fullScreen;
@@ -30,7 +29,18 @@ public class SendEmailDialog {
     protected static WebElement alertMessage;
     @FindBy(xpath = "//div[@style=\"position: absolute;\"]//div[@role=\"dialog\"]")
     protected  static WebElement emailDialog;
-
+    @FindBy(xpath = "//*[@id=\"link_undo\"]")
+    protected static  WebElement undoButton;
+    @FindBy(xpath = "//form/div/div/span[@email]")
+    protected static WebElement recipientFilledData;
+    @FindBy(xpath = "//*[@data-tooltip=\"Інші параметри надсилання\"]")
+    protected static WebElement moreSendOptions;
+    @FindBy(xpath = "//*[@selector=\"scheduledSend\"]")
+    protected static WebElement scheduleEmail;
+    @FindBy(xpath = "(//span[@role=\"heading\"]/../..//div[@role=\"menuitem\"])[1]")
+    protected static WebElement tommorowMorningSchedule;
+    @FindBy(xpath = "((//span[@role=\"heading\"]/../..//div[@role=\"menuitem\"])[1]/div)[2]")
+    protected static WebElement scheduleDate;
 
 
 
