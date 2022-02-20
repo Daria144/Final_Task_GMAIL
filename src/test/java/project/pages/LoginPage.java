@@ -27,6 +27,8 @@ public class LoginPage extends BasePage{
     private  WebElement createAccountButton;
     @FindBy(xpath = "//*[@id=\"identifierNext\"]//button")
     private WebElement nextLoginButton;
+    @FindBy(xpath = "(//form//div[@role=\"link\"])[2]")
+    private static WebElement chooseAnotherAccount;
 
     /**
      * Elements of Login Page - last step
@@ -65,7 +67,7 @@ public class LoginPage extends BasePage{
         passwordInput.sendKeys(Keys.ENTER);
     }
     public void inputPasswordAndClickOnNextButton(String pwd){
-        loginInput.sendKeys(pwd);
+        passwordInput.sendKeys(pwd);
         nextPasswordButton.click();
     }
 
@@ -134,5 +136,8 @@ public class LoginPage extends BasePage{
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//div[@aria-live=\"assertive\"]/div[@jsname=\"B34EJ\"]")));
         return assertLabel;
+    }
+    public static void clickOnChooseAnotherAccount(){
+        chooseAnotherAccount.click();
     }
 }

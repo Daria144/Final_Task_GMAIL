@@ -19,14 +19,18 @@ public class InboxTest extends LoginTest{
     @BeforeClass
     public void userIsLoggedIn(){
         LoginContext.logInPressingEnter(TestDataProperties.getTestData("login"),TestDataProperties.getTestData("password"));
-        Assert.assertTrue(LoginContext.userLabelIsDisplayed());
+        //Assert.assertTrue(LoginContext.userLabelIsDisplayed());
     }
-    @Test
+    @AfterClass(alwaysRun = true)
+    public void driverQuit(){
+        turnDown();
+    }
+    @Test(enabled = false)
     public void allEmailOptionsAreAvailable(){
         inboxPage.selectFirstEmail();
         Assert.assertTrue(elementsAreClickable(inboxPage.emailDialogOptions()));
     }
-    @Test
+    @Test(enabled = false)
     public void allEmailPopupOptionsAreAvailable(){
         inboxPage.clickOnComposeButton();
         Assert.assertTrue(elementsAreClickable(inboxPage.getOptionsToBeClickable()));
@@ -80,8 +84,8 @@ public class InboxTest extends LoginTest{
         String emailBody = InboxContext.addEmailToDraftAndReturnBody();
         int draftCount=InboxContext.getSnoozedAndDraftsCount()[1];
         boolean countIsIncreased= draftCount > draftCountStart;
-        Assert.assertTrue(countIsIncreased);
-        Assert.assertTrue(InboxContext.draftContainsAllEnteredData(emailBody));
+        Assert.assertTrue(countIsIncreased,"Count of drafts is not increased");
+        Assert.assertTrue(InboxContext.draftContainsAllEnteredData(emailBody),"Draft doesn`t contain all data");
     }
     @Test
     public void sendEmailAndClickOnUndoButton(){
@@ -130,12 +134,12 @@ public class InboxTest extends LoginTest{
 
 
     }
-    @BeforeMethod
+    @AfterMethod
     public void openNewTab(){
         try {
             ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(0));
-            driver.get(ConfigProperties.getProperty("loginPage"));
+            driver.get(ConfigProperties.getProperty("loginPageGmail"));
             Assert.assertTrue(LoginContext.userLabelIsDisplayed());
         } catch (UnhandledAlertException f) {
             try {

@@ -115,6 +115,7 @@ public class InboxContext {
     }
     public static int[] getSnoozedAndDraftsCount(){
         int [] emailsCount =new int[2];
+        inboxPage.waitForDraftsSectionDisplayed();
         builder.moveToElement(InboxPage.getSnoozedSection()).perform();
         emailsCount[0] = InboxPage.getSnoozedCount();
         builder.moveToElement(InboxPage.getDraftSection()).perform();

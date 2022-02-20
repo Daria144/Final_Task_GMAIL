@@ -10,11 +10,13 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import project.configuration.ConfigProperties;
 import project.pages.BasePage;
+import project.utils.TestNgITestListen;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
+@Listeners(TestNgITestListen.class)
 public class BaseTest {
     public static WebDriver driver;
 
@@ -28,6 +30,13 @@ public class BaseTest {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.get(ConfigProperties.getProperty("loginPage"));
+        waitForDeRedirected();
+    }
+    public static void waitForDeRedirected(){
+        WebElement signInButton=driver.findElement(By.xpath("//a[@data-action=\"sign in\"]"));
+        signInButton.click();
+        WebElement dynamicElement = (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@title=\"Google\"]")));
     }
     /**
      * @param elementsToBeDisplayed
@@ -66,21 +75,6 @@ public class BaseTest {
         }
         return allPresent;
     }
-
-
-//    public static void allElementsAreDisplayed(WebElement[] elements){
-//        for (WebElement element : elements) {
-//            Assert.assertTrue(BasePage.isDisplayed(element));
-//        }
-//    }
-//    public static void allElementsAreClickable(WebElement[] elements){
-//        for (WebElement element : elements) {
-//            Assert.assertTrue(BasePage.isClickable(element));
-//        }
-//    }
-
-
-
     @AfterTest
             (alwaysRun = true)
     public void turnDown(){

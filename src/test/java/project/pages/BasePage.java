@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,24 +14,26 @@ import static project.tests.BaseTest.driver;
 public class BasePage {
     protected static WebDriver driver;
 
-    public BasePage(WebDriver driver){
+    public BasePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
-    public static boolean isClickable(WebElement element){
-        boolean isElementClickable=true;
+
+
+    public static boolean isClickable(WebElement element) {
+        boolean isElementClickable = true;
         try {
             new WebDriverWait(driver, 5)
                     .until(ExpectedConditions.elementToBeClickable(element));
         } catch (TimeoutException e) {
-            isElementClickable=false;
+            isElementClickable = false;
         }
         return isElementClickable;
 
 
+    }
 
-    }
-    public boolean isClear(WebElement element){
-        return element.getText().equals("");
-    }
+
 }
+
+
