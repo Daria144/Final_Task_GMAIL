@@ -28,7 +28,7 @@ public class BaseTest {
         dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
         driver = new ChromeDriver(dc);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(25));
         driver.get(ConfigProperties.getProperty("loginPage"));
         waitForDeRedirected();
     }

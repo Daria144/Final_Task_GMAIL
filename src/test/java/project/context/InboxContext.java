@@ -6,6 +6,7 @@ import project.configuration.TestDataProperties;
 import project.pages.InboxPage.InboxPage;
 import project.utils.StringUtils;
 
+import java.time.Duration;
 import java.util.List;
 
 import static project.tests.BaseTest.driver;
@@ -21,11 +22,10 @@ public class InboxContext {
         int emailsCount = InboxPage.getInputCount();
         return emailsCount;
     }
-    public static String[] sentEmailToCurrentUser(){
-        String[] filledData = openEmailDialogAndReturnedEnteredData(TestDataProperties.getTestData("login"));
+    public static void sentEmailToCurrentUser(){
+        openEmailDialogAndReturnedEnteredData(TestDataProperties.getTestData("login"));
         inboxPage.clickOnSendEmailButton();
         inboxPage.waitForEmailPopupIsClosed();
-        return filledData;
     }
     public static void openEmailDialogAndFillInRequiredData(){
         inboxPage.clickOnComposeButton();
@@ -64,34 +64,28 @@ public class InboxContext {
         inboxPage.clickOnSendEmailButton();
         driver.switchTo().alert().accept();
     }
-    public static String addEmailToDraftAndReturnBody(){
+    public static void addEmailToDraft(){
         inboxPage.waitForDraftsSectionDisplayed();
-        inboxPage.openDraftSection();
-        inboxPage.clickOnComposeButton();
+        builder.moveToElement(inboxPage.getDraftLabel()).doubleClick().build().perform();
+        //inboxPage.openDraftSection();
+        builder.moveToElement(inboxPage.getComposeEmailButton()).click().build().perform();
         inboxPage.waitForEmailPopupOpened();
         inboxPage.fillInEmailBody(randomString);
         inboxPage.clickOnCrossButton();
         inboxPage.waitForEmailPopupIsClosed();
-        return randomString;
     }
-    public static boolean draftContainsAllEnteredData(String body){
-        inboxPage.openFirstEmailInList();
-        boolean contains=inboxPage.getEmailBody().contains(body);
-        return contains;
-    }
-    public static String[] addEmailToDraftAndClickOnUndoButton(){
+    public static void addEmailToDraftAndClickOnUndoButton(){
         inboxPage.openDraftSection();
-        String[] filledData = openEmailDialogAndReturnedEnteredData(TestDataProperties.getTestData("loginRec"));
+        openEmailDialogAndReturnedEnteredData(TestDataProperties.getTestData("loginRec"));
         inboxPage.clickOnSendEmailButton();
         inboxPage.clickOnUndoButton();
-        inboxPage.waitForEmailPopupOpened();
+        //inboxPage.waitForEmailPopupOpened();
         inboxPage.clickOnCrossButton();
         inboxPage.waitForEmailPopupIsClosed();
         inboxPage.openFirstEmailInList();
-        return filledData;
     }
     public static boolean emailContainsAllEnteredData(String[] data){
-        //inboxPage.waitForEmailBodyOpened();
+        inboxPage.waitForEmailPopupOpened();
         boolean emailDataEquals;
         emailDataEquals=data[0].equals(inboxPage.getRecipientEmailField());
         String body=inboxPage.getEmailBody();
@@ -116,9 +110,10 @@ public class InboxContext {
     public static int[] getSnoozedAndDraftsCount(){
         int [] emailsCount =new int[2];
         inboxPage.waitForDraftsSectionDisplayed();
-        builder.moveToElement(InboxPage.getSnoozedSection()).perform();
+        builder.moveToElement(InboxPage.getSnoozedLabel()).perform();
+        builder.moveToElement(InboxPage.getSnoozedLabel()).click().build().perform();
         emailsCount[0] = InboxPage.getSnoozedCount();
-        builder.moveToElement(InboxPage.getDraftSection()).perform();
+        builder.moveToElement(InboxPage.getDraftSection()).click().build().perform();
         emailsCount[1] = InboxPage.getDraftsCount();
         return emailsCount;
     }
@@ -133,6 +128,7 @@ public class InboxContext {
         scheduleDate=inboxPage.getScheduleDateText();
         inboxPage.selectScheduleDate();
         inboxPage.waitForSnoozedPopupIsClosed();
+        inboxPage.waitForEmailPopupIsClosed();
     }
     public static boolean scheduledDateIsSetCorrectly(){
         inboxPage.openSnoozedSection();
@@ -147,6 +143,7 @@ public class InboxContext {
         inboxPage.waitForEmailPopupOpened();
     }
     public static boolean searchResultsContainsKeyword(){
+        inboxPage.waitForSearchOptionPopupClosed();
         boolean keyword=false;
         inboxPage.setKeywordInSearchField(TestDataProperties.getTestData("keyword"));
         for (WebElement res : inboxPage.getSearchedResults()) {
@@ -195,11 +192,12 @@ public class InboxContext {
         inboxPage.clickOnReplyButton();
         inboxPage.waitForRepliedTextareaOpenedAndEnterString(randomString);
         inboxPage.clickOnSendEmailButton();
+        inboxPage.waitForEmailPopupIsClosed();
         return randomString;
     }
     public static void openSentSideOption(){
-        builder.moveToElement(inboxPage.getSentEmailSide()).build().perform();
-        builder.moveToElement(inboxPage.getSentEmailSide()).click().build().perform();
+        builder.moveToElement(inboxPage.getSentEmailSide()).perform();
+        builder.moveToElement(inboxPage.getSentEmailSide()).doubleClick().build().perform();
         inboxPage.openFirstEmailInList();
     }
     public static boolean emailContainsRepliedEmail(){

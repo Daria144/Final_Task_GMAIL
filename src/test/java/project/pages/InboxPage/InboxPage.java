@@ -18,6 +18,8 @@ public class InboxPage extends BasePage {
         super(driver);
     }
     Actions actions = new Actions(driver);
+    static WebDriverWait driverWait=new WebDriverWait(driver,30);
+
 
     @FindBy(xpath = "//*[@placeholder=\"Пошук у пошті\"]")
     private WebElement searchField;
@@ -108,11 +110,11 @@ public class InboxPage extends BasePage {
     @FindBy(xpath = "((//span[@role=\"heading\"]/../..//div[@role=\"menuitem\"])[1]/div)[2]")
     protected static WebElement scheduleDate;
     //side menu
-    @FindBy(xpath = "//div[@data-tooltip=\"Вхідні\"]")
+    @FindBy(xpath = "(//div[@data-tooltip=\"Вхідні\"]/div/div)[1]")
     private static WebElement inputSection;
     @FindBy(xpath = "//div[@data-tooltip=\"Вхідні\"]/div/div/div")
     private static WebElement inputCount;
-    @FindBy(xpath = "//div[@data-tooltip=\"Чернетки\"]")
+    @FindBy(xpath = "(//div[@data-tooltip=\"Чернетки\"]/div/div)[1]")
     protected static WebElement draftSection;
     @FindBy(xpath = "//div[@data-tooltip=\"Чернетки\"]/div/div/div")
     protected static WebElement draftCount;
@@ -122,6 +124,8 @@ public class InboxPage extends BasePage {
     protected static WebElement staredSection;
     @FindBy(xpath = "//*[@data-tooltip=\"Заплановано\"]")
     protected static WebElement snoozedSection;
+    @FindBy(xpath = "(//*[@data-tooltip=\"Заплановано\"]/div/div)[1]")
+    private static WebElement snoozedLabel;
     @FindBy(xpath = "//*[@data-tooltip=\"Заплановано\"]/div/div/div")
     protected static WebElement snoozedCount;
     @FindBy(xpath = "//*[@role=\"navigation\"]//span[text()='Більше']")
@@ -130,8 +134,8 @@ public class InboxPage extends BasePage {
     private static WebElement categorySideOption;
     @FindBy(xpath = "//div[text()=\"Переслати як вкладений файл\"]/..")
     private static WebElement forwardAsAttachmentOption;
-    @FindBy(xpath = "//a[@aria-label=\"Надіслані\"]/../../..")
-    private static WebElement sentEmailSide;
+    @FindBy(xpath = "(//*[@data-tooltip=\"Надіслані\"]/div/div)[1]")
+    private static WebElement sentEmailSideLabel;
     @FindBy(xpath ="(//div[@role=\"main\"]//tr[@role=\"row\"])[1]//span[text()=\"Вкладений файл:\"]/..")
     private static WebElement emailWithAttachment;
     @FindBy(xpath = "//label[text()=\"Містить вкладений файл\"]")
@@ -182,43 +186,42 @@ public class InboxPage extends BasePage {
         return emailPopup.isDisplayed();
     }
     public boolean alertMessageIsDisplayed(){
-        return alertMessage.isDisplayed();
+        WebElement alertMessageEl = driver.findElement(By
+                        .xpath("//div[@role=\"alertdialog\"]/div/span[@role=\"heading\"]"));
+        return alertMessageEl.isDisplayed();
     }
     public WebElement waitForDraftsSectionDisplayed(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
         WebElement draftSection = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//div[@data-tooltip=\"Чернетки\"]")));
         return draftSection;
     }
     public static int getDraftsCount() {
+        driverWait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath("//div[@data-tooltip=\"Чернетки\"]/div/div/div")));
         String countText=draftCount.getText();
             return Integer.parseInt(countText);
 
     }
     public void openFirstEmailInList(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
         WebElement emailFirst = driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By
+                .until(ExpectedConditions.elementToBeClickable(By
                         .xpath("(//div[@role=\"main\"]//tr[@role=\"row\"])[1]")));
         emailFirst.click();
     }
     public WebElement waitForEmailPopupOpenedAndReturnElement(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
         WebElement emailPopup = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//div[@role=\"dialog\"]")));
         return emailPopup;
     }
     public void waitForEmailPopupOpened(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
-        WebElement emailPopup = driverWait
+        driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//div[@role=\"dialog\"]")));
     }
     public void waitForEmailBodyOpened(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
-        WebElement email = driverWait
+        driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//div[@data-message-id]//div[@dir=\"ltr\"]")));
     }
@@ -252,8 +255,7 @@ public class InboxPage extends BasePage {
         scheduleEmail.click();
     }
     public void waitForSchedulePopupOpened(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
-        WebElement schedulePopup = driverWait
+        driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//*[@role=\"dialog\"]//span[@role=\"heading\"]")));
 
@@ -268,34 +270,41 @@ public class InboxPage extends BasePage {
         snoozedSection.click();
     }
     public static int getSnoozedCount() {
+        driverWait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath("//*[@data-tooltip=\"Заплановано\"]/div")));
         return Integer.parseInt(snoozedCount.getText());
     }
     public static String getSnoozedDateText(){
         return snoozedDateText;
     }
     public void waitForSnoozedPopupIsClosed(){
-        WebDriverWait wait = new WebDriverWait(driver, 5000); // 5 seconds timeout
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By
+        driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By
                 .xpath("//*[@role=\"dialog\"]//span[@role=\"heading\"]")));
     }
     public void waitForEmailPopupIsClosed(){
-        WebDriverWait wait = new WebDriverWait(driver, 5000); // 5 seconds timeout
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By
+        driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By
                 .xpath("//div[@role=\"dialog\"]")));
     }
     public String getSnoozedDateInEmail(){
         return snoozedDateInEmail.getText();
     }
     public static WebElement getInputSection() {
+        driverWait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath("(//div[@data-tooltip=\"Вхідні\"]/div/div)[1]")));
         return inputSection;
     }
     public static int getInputCount() {
+        driverWait.until(ExpectedConditions.elementToBeClickable(By
+                        .xpath("//div[@data-tooltip=\"Вхідні\"]/div/div/div")));
         return Integer.parseInt(inputCount.getText());
     }
     public static WebElement getSnoozedSection(){
         return snoozedSection;
     }
     public static WebElement getDraftSection(){
+        driverWait
+                .until(ExpectedConditions.elementToBeClickable(By
+                        .xpath("(//div[@data-tooltip=\"Чернетки\"]/div/div)[1]")));
         return draftSection;
     }
     public WebElement[] getOptionsToBeClickable(){
@@ -337,14 +346,12 @@ public class InboxPage extends BasePage {
         fromInputField.sendKeys(Keys.ENTER);
     }
     public void waitForSearchOptionPopupOpened(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
-        WebElement schedulePopup = driverWait
+        driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//label[text()='Від']/../..//input[@type=\"text\"]")));
 
     }
     public void waitForSearchOptionPopupClosed(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By
                         .xpath("//label[text()='Від']/../..//input[@type=\"text\"]")));
 
@@ -378,7 +385,6 @@ public class InboxPage extends BasePage {
         categorySideOption.click();
     }
     public void waitForUpdateOptionAndClickOnIt(){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
         WebElement updatesOption = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//*[@data-tooltip=\"Оновлення\"]")));
@@ -394,7 +400,7 @@ public class InboxPage extends BasePage {
         forwardAsAttachmentOption.click();
     }
     public WebElement getSentEmailSide(){
-        return sentEmailSide;
+        return sentEmailSideLabel;
     }
     public String getTitleNameOfEmailWithAttachment(){
         return emailWithAttachment.getAttribute("title");
@@ -413,22 +419,36 @@ public class InboxPage extends BasePage {
         replyButtonInOpenedEmail.click();
     }
     public void waitForRepliedTextareaOpenedAndEnterString(String str){
-        WebDriverWait driverWait=new WebDriverWait(driver,20);
         WebElement replyText = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//div[@aria-label=\"Текст повідомлення\"]")));
         replyText.sendKeys(str);
     }
     public String getRepliedEmailAttribute(){
+        driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By
+                        .xpath("(//*[@role=\"listitem\"])[1]//span[@email]")));
         return repliedEmail.getAttribute("email");
     }
     public String getRepliedEmailMessageBody(){
+        WebElement repliedEmailMessageBody= driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By
+                        .xpath("(//div[@data-message-id]//div[@dir=\"ltr\"])[1]")));
         return repliedEmailMessageBody.getText();
     }
     public String getRecipientEmailField(){
+        driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By
+                        .xpath("//form[@method=\"POST\"]/div/div//span[@email]")));
         return recipientEmailField.getAttribute("email");
     }
     public WebElement getDraftLabel(){
         return draftLabel;
+    }
+    public WebElement getComposeEmailButton(){
+        return composeEmailButton;
+    }
+    public static WebElement getSnoozedLabel(){
+        return snoozedLabel;
     }
 }

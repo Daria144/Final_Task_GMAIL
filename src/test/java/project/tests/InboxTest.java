@@ -9,17 +9,19 @@ import project.configuration.ConfigProperties;
 import project.configuration.TestDataProperties;
 import project.context.InboxContext;
 import project.context.LoginContext;
+import project.pages.BasePage;
 
+import java.time.Duration;
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static project.context.InboxContext.inboxPage;
 
-public class InboxTest extends LoginTest{
+public class InboxTest extends BaseTest {
     @BeforeClass
     public void userIsLoggedIn(){
         LoginContext.logInPressingEnter(TestDataProperties.getTestData("login"),TestDataProperties.getTestData("password"));
-        //Assert.assertTrue(LoginContext.userLabelIsDisplayed());
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(25));
     }
     @AfterClass(alwaysRun = true)
     public void driverQuit(){
@@ -38,7 +40,7 @@ public class InboxTest extends LoginTest{
     @Test
     public void searchForEmailWithKeyword(){
         inboxPage.setKeywordInSearchField(TestDataProperties.getTestData("keyword"));
-        Assert.assertTrue(InboxContext.searchResultsContainsKeyword());
+        Assert.assertTrue(InboxContext.searchResultsContainsKeyword(),"Keyword is missed");
     }
     @Test
     public void enterFromUserInSearchOptions(){
@@ -48,11 +50,11 @@ public class InboxTest extends LoginTest{
     @Test
     public void emailIsSentAndThenRead(){
         int readCountStart=InboxContext.getReadCount();
-        String[] filledData=InboxContext.sentEmailToCurrentUser();
+        InboxContext.sentEmailToCurrentUser();
         int readCountIncreased=InboxContext.getReadCount();
         boolean countIsIncreased=readCountStart<readCountIncreased;
         Assert.assertTrue(countIsIncreased,"count is increased");
-        Assert.assertTrue(InboxContext.emailContainsAllEnteredData(filledData));
+        inboxPage.openFirstEmailInList();
         int readCountDecreased=InboxContext.getReadCount();
         boolean countIsDecreased=readCountIncreased>readCountDecreased;
         Assert.assertTrue(countIsDecreased,"count is decreased");
@@ -79,18 +81,20 @@ public class InboxTest extends LoginTest{
         Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed());
     }
     @Test
-    public void addEmailToDraftClickingOnCrossIconAndOpenIt(){
+    public void addEmailToDraftClickingOnCrossIcon(){
         int draftCountStart=InboxContext.getSnoozedAndDraftsCount()[1];
-        String emailBody = InboxContext.addEmailToDraftAndReturnBody();
+        InboxContext.addEmailToDraft();
         int draftCount=InboxContext.getSnoozedAndDraftsCount()[1];
         boolean countIsIncreased= draftCount > draftCountStart;
-        Assert.assertTrue(countIsIncreased,"Count of drafts is not increased");
-        Assert.assertTrue(InboxContext.draftContainsAllEnteredData(emailBody),"Draft doesn`t contain all data");
+        Assert.assertTrue(countIsIncreased,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
     }
     @Test
     public void sendEmailAndClickOnUndoButton(){
-        String[] filledData=InboxContext.addEmailToDraftAndClickOnUndoButton();
-        Assert.assertTrue(InboxContext.emailContainsAllEnteredData(filledData));
+        int draftCountStart=InboxContext.getSnoozedAndDraftsCount()[1];
+        InboxContext.addEmailToDraftAndClickOnUndoButton();
+        int draftCount=InboxContext.getSnoozedAndDraftsCount()[1];
+        boolean countIsIncreased=draftCount>draftCountStart;
+        Assert.assertTrue(countIsIncreased,"Count is not increased");
     }
     @Test
     public void markedMessageIsAddedToMarkSection(){
@@ -102,7 +106,7 @@ public class InboxTest extends LoginTest{
         Assert.assertTrue(countIsDecreased);
 
     }
-    @Test
+    @Test(priority = 1)
     public void sendEmailInScheduledTime(){
         int scheduleCountStart=InboxContext.getSnoozedAndDraftsCount()[0];
         InboxContext.selectScheduleDate();
@@ -111,16 +115,15 @@ public class InboxTest extends LoginTest{
         Assert.assertTrue(countIsIncreased);
         Assert.assertTrue(InboxContext.scheduledDateIsSetCorrectly());
     }
-    @Test
+    @Test(priority = 1)
     public void sendEmailInScheduleDateAndCLickOnUndoButton(){
         int[] emailsCountStart=InboxContext.getSnoozedAndDraftsCount();
         InboxContext.sendEmailInScheduleDateAndCLickOnUndoButton();
         int[] emailsCount=InboxContext.getSnoozedAndDraftsCount();
         boolean countNotChanged= emailsCountStart[0]== emailsCount[0];
-        Assert.assertTrue(countNotChanged);
-        Assert.assertTrue(InboxContext.emailPopupIsDisplayed());
+        Assert.assertTrue(countNotChanged,"Count is changed");
         boolean countIsIncreased= emailsCountStart[1]< emailsCount[1];
-        Assert.assertTrue(countIsIncreased);
+        Assert.assertTrue(countIsIncreased,"Count is not increased");
     }
     @Test
     public void replySentEmail(){
