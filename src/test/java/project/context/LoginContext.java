@@ -34,43 +34,7 @@ public class LoginContext {
     public static boolean assertLabelIsDisplayed(){
         return loginPage.waitForAsserLabel().isDisplayed();
     }
-    /**
-     * @param elementsToBeDisplayed
-     * @return true if elements are displayed
-     */
-    public static boolean elementsAreDisplayed(WebElement[] elementsToBeDisplayed){
-        boolean allPresent=true;
 
-            for (WebElement el : elementsToBeDisplayed) {
-                try {
-                    el.isDisplayed();
-                }
-                catch (NoSuchElementException exc){
-                allPresent = false;
-                    System.out.println("WebElement not displayed: " + el.getTagName() + " Text: " + el.getText());
-            }
-        }
-        return allPresent;
-    }
-
-    /**
-     *
-     * @param elementsToBeClickable
-     * @return true if elemets are clickable
-     */
-    public static boolean elementsAreClickable(WebElement[] elementsToBeClickable){
-        boolean allPresent=true;
-        for (WebElement el : elementsToBeClickable) {
-            try {
-                BasePage.isClickable(el);
-            }
-            catch (NoSuchElementException exc){
-                allPresent = false;
-                System.out.println("WebElement not displayed: " + el.getTagName() + " Text: " + el.getText());
-            }
-        }
-        return allPresent;
-    }
 
 
 }

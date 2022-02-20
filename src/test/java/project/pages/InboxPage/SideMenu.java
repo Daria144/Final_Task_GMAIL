@@ -8,7 +8,9 @@ import project.pages.BasePage;
 public class SideMenu extends BasePage {
 
     public SideMenu(WebDriver driver) {
-        super(driver); }
+        super(driver);
+        InboxPage inboxPage = new InboxPage(driver);
+    }
 
 
     @FindBy(xpath = "//div[@data-tooltip=\"Чернетки\"]")

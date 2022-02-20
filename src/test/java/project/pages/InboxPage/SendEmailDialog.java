@@ -9,6 +9,7 @@ public class SendEmailDialog extends BasePage {
 
     public SendEmailDialog (WebDriver driver) {
         super(driver);
+        InboxPage inboxPage = new InboxPage(driver);
     }
 
     @FindBy(xpath = "//*[contains(@data-tooltip,'На весь екран')]")
@@ -41,6 +42,7 @@ public class SendEmailDialog extends BasePage {
     protected static WebElement tommorowMorningSchedule;
     @FindBy(xpath = "((//span[@role=\"heading\"]/../..//div[@role=\"menuitem\"])[1]/div)[2]")
     protected static WebElement scheduleDate;
+
 
 
 

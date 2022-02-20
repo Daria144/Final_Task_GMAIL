@@ -14,11 +14,11 @@ public class LoginTest extends BaseTest{
 
     @Test
     public void elementsAreDisplayedAndClickable(){
-        Assert.assertTrue(LoginContext.elementsAreDisplayed(loginPage.getElementsOnFirstPageToBeDisplayed()));
-        Assert.assertTrue(LoginContext.elementsAreClickable(loginPage.getElementsOnFirstPageToBeClickable()));
+        Assert.assertTrue(elementsAreDisplayed(loginPage.getElementsOnFirstPageToBeDisplayed()));
+        Assert.assertTrue(elementsAreClickable(loginPage.getElementsOnFirstPageToBeClickable()));
         loginPage.inputLoginAndPressEnter(TestDataProperties.getTestData("login"));
-        Assert.assertTrue(LoginContext.elementsAreDisplayed(loginPage.getElementsOnLastPageToBeDisplayed()));
-        Assert.assertTrue(LoginContext.elementsAreClickable(loginPage.getElementsOnLastPageToBeClickable()));
+        Assert.assertTrue(elementsAreDisplayed(loginPage.getElementsOnLastPageToBeDisplayed()));
+        Assert.assertTrue(elementsAreClickable(loginPage.getElementsOnLastPageToBeClickable()));
     }
 
     @Test
