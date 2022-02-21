@@ -173,6 +173,9 @@ public class InboxPage extends BasePage {
         undoButton.click();
     }
     public void clickOnComposeButton(){
+        driverWait=new WebDriverWait(driver,5);
+        WebElement composeEmailButton = driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class=\"z0\"]/div[@role=\"button\"]")));
         composeEmailButton.click();
     }
     public boolean popupOfEmailSentIsDisplayed() {
@@ -249,9 +252,10 @@ public class InboxPage extends BasePage {
     }
     public static int getSnoozedCount() {
         driverWait.until(ExpectedConditions.presenceOfElementLocated(By
-                .xpath("(//*[@data-tooltip=\"Snoozed\"]/div/div)[1]")));
-        driverWait.until(ExpectedConditions.elementToBeClickable(By
-                .xpath("(//*[@data-tooltip=\"Snoozed\"]/div/div)[1]")));
+                .xpath("//*[@data-tooltip=\"Заплановано\"]/div/div/div")));
+        if(snoozedCount.getText().equals("")){
+            return 0;
+        }
         return Integer.parseInt(snoozedCount.getText());
     }
     public void waitForSnoozedPopupIsClosed(){
@@ -431,11 +435,8 @@ public class InboxPage extends BasePage {
         return composeEmailButton;
     }
     public static WebElement getSnoozedLabel(){
-        driverWait
+        WebElement snoozedLabel= driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
-                        .xpath("(//*[@data-tooltip=\"Заплановано\"]/div/div)[1]")));
-        driverWait
-                .until(ExpectedConditions.elementToBeClickable(By
                         .xpath("(//*[@data-tooltip=\"Заплановано\"]/div/div)[1]")));
         return snoozedLabel;
     }

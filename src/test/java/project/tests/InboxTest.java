@@ -20,7 +20,8 @@ public class InboxTest extends BaseTest {
     private static Logger LOG = Logger.getLogger(InboxTest.class);
     @BeforeClass(groups = "InboxTest")
     public void userLoggedIn(){
-        InboxPage.clickOnChooseUserAccount();
+        //InboxPage.clickOnChooseUserAccount();
+        LoginContext.logInClickingOnNextButtons(TestDataProperties.getTestData("login"),TestDataProperties.getTestData("password"));
         LoginContext.userLabelIsDisplayed();
     }
     @AfterClass(alwaysRun = true,groups = "InboxTest")
@@ -31,27 +32,23 @@ public class InboxTest extends BaseTest {
     @Test(priority = 2,groups = "InboxTest")
     public void allEmailOptionsAreAvailable(){
         inboxPage.selectFirstEmail();
-        Assert.assertTrue(elementsAreDisplayed(inboxPage.emailDialogOptions()),"Elements are not displayed");
         LOG.assertLog(elementsAreDisplayed(inboxPage.emailDialogOptions()),"Email options are not displayed");
     }
     @Test(priority = 2,groups = "InboxTest")
     public void allEmailPopupOptionsAreAvailable(){
         inboxPage.clickOnComposeButton();
-        Assert.assertTrue(elementsAreDisplayed(inboxPage.getOptionsToBeClickable()));
         LOG.assertLog(elementsAreDisplayed(inboxPage.getOptionsToBeClickable()),"Email popup options are not clickable");
 
     }
     @Test(groups = "InboxTest")
     public void searchForEmailWithKeyword(){
         inboxPage.setKeywordInSearchField(TestDataProperties.getTestData("keyword"));
-        Assert.assertTrue(InboxContext.searchResultsContainsKeyword(),"Keyword is missed");
         LOG.assertLog(InboxContext.searchResultsContainsKeyword(),"Keyword is missed");
 
     }
     @Test(groups = "InboxTest")
     public void enterFromUserInSearchOptions(){
         InboxContext.enterFromUserInSearchOptions();
-        Assert.assertTrue(InboxContext.emailSendersContainsEnteredEmail(),"Senders are no as in search query");
         LOG.assertLog(InboxContext.emailSendersContainsEnteredEmail(),"Senders are no as in search query");
     }
     @Test(groups = "InboxTest")
@@ -60,37 +57,31 @@ public class InboxTest extends BaseTest {
         InboxContext.sentEmailToCurrentUser();
         int readCountIncreased=InboxContext.getReadCount();
         boolean countIsIncreased=readCountStart<readCountIncreased;
-        Assert.assertTrue(countIsIncreased,"count is not  increased: "+readCountStart+"!<"+readCountIncreased);
         LOG.assertLog(true,"count is not  increased: "+readCountStart+"!<"+readCountIncreased);
         inboxPage.openFirstEmailInList();
         int readCountDecreased=InboxContext.getReadCount();
         boolean countIsDecreased=readCountIncreased>readCountDecreased;
-        Assert.assertTrue(countIsDecreased,"count is not decreased: "+readCountIncreased+"!>"+readCountDecreased);
         LOG.assertLog(true,"count is not decreased: "+readCountIncreased+"!>"+readCountDecreased);
     }
     @Test(groups = "InboxTest")
     public void searchForEmailWithAttachment(){
         InboxContext.searchForEmailWithAttachment();
-        Assert.assertTrue(InboxContext.emailContainsAttachment(),"Emails do not contain attachment");
         LOG.assertLog(InboxContext.emailContainsAttachment(),"Emails do not contain attachment");
     }
     @Test(groups = "InboxTest")
     public void sendEmailInFullScreen(){
         InboxContext.sendEmailInFullScreen();
-        Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed(),"Email in full screen is not sent");
         LOG.assertLog(inboxPage.popupOfEmailSentIsDisplayed(),"Email in full screen is not sent");
 
     }
     @Test(groups = "InboxTest")
     public void sendEmailWithNoRecipient(){
         InboxContext.sendEmailWithNoRecipient();
-        Assert.assertTrue(inboxPage.alertMessageIsDisplayed(),"Email with no recipient should not be sent");
         LOG.assertLog(inboxPage.alertMessageIsDisplayed(),"Email with no recipient should not be sent");
     }
     @Test(groups = "InboxTest")
     public void sendEmailWithNoSubjectAndBody(){
         InboxContext.sendEmailWithNoSubjectAndBody();
-        Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed(),"Email with no subject and body is not sent");
         LOG.assertLog(inboxPage.popupOfEmailSentIsDisplayed(),"Email with no subject and body is not sent");
     }
     @Test(groups = "InboxTest")
@@ -99,8 +90,7 @@ public class InboxTest extends BaseTest {
         InboxContext.addEmailToDraft();
         int draftCount=InboxContext.getSnoozedAndDraftsCount()[1];
         boolean countIsIncreased= draftCount > draftCountStart;
-        Assert.assertTrue(countIsIncreased,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
-        LOG.assertLog(true,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
+        LOG.assertLog(countIsIncreased,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
     }
     @Test(groups = "InboxTest")
     public void sendEmailAndClickOnUndoButton(){
@@ -108,19 +98,16 @@ public class InboxTest extends BaseTest {
         InboxContext.addEmailToDraftAndClickOnUndoButton();
         int draftCount=InboxContext.getSnoozedAndDraftsCount()[1];
         boolean countIsIncreased=draftCount>draftCountStart;
-        Assert.assertTrue(countIsIncreased,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
-        LOG.assertLog(true,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
+        LOG.assertLog(countIsIncreased,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
     }
     @Test(groups = "InboxTest")
     public void markedMessageIsAddedToMarkSection(){
         int[] emailCount=InboxContext.markedMessageIsAddedToMarkSection();
         boolean countIsIncreased= emailCount[1] > emailCount[0];
-        Assert.assertTrue(countIsIncreased,"Start count: "+emailCount[0]+"\nActual count: "+emailCount[1]);
-        LOG.assertLog(true,"Start count: "+emailCount[0]+"\nActual count: "+emailCount[1]);
+        LOG.assertLog(countIsIncreased,"Start count: "+emailCount[0]+"\nActual count: "+emailCount[1]);
         int newEmailCount=InboxContext.unmarkedMessageIsRemovedFromMarkSection();
         boolean countIsDecreased=newEmailCount<emailCount[1];
-        Assert.assertTrue(countIsDecreased,"Start count: "+emailCount[1]+"\nActual count: "+newEmailCount);
-        LOG.assertLog(true,"Start count: "+emailCount[1]+"\nActual count: "+newEmailCount);
+        LOG.assertLog(countIsDecreased,"Start count: "+emailCount[1]+"\nActual count: "+newEmailCount);
     }
     @Test(groups = "InboxTest")
     public void sendEmailInScheduledTime(){
@@ -128,10 +115,8 @@ public class InboxTest extends BaseTest {
         InboxContext.selectScheduleDate();
         int scheduleCount=InboxContext.getSnoozedAndDraftsCount()[0];
         boolean countIsIncreased= scheduleCount > scheduleCountStart;
-        Assert.assertTrue(countIsIncreased,"Start count: "+scheduleCountStart+"\nActual count: "+scheduleCount);
-        LOG.assertLog(true,"Start count: "+scheduleCountStart+"\nActual count: "+scheduleCount);
-        Assert.assertTrue(InboxContext.scheduledDateIsSetCorrectly(),"Schedule date is not set correctly");
-        LOG.assertLog(true,"Schedule date is not set correctly");
+        LOG.assertLog(countIsIncreased,"Start count: "+scheduleCountStart+"\nActual count: "+scheduleCount);
+        LOG.assertLog(InboxContext.scheduledDateIsSetCorrectly(),"Schedule date is not set correctly");
 
     }
     @Test(groups = "InboxTest")
@@ -140,22 +125,18 @@ public class InboxTest extends BaseTest {
         InboxContext.sendEmailInScheduleDateAndCLickOnUndoButton();
         int[] emailsCount=InboxContext.getSnoozedAndDraftsCount();
         boolean countNotChanged= emailsCountStart[0]== emailsCount[0];
-        Assert.assertTrue(countNotChanged,"Count is changed");
-        LOG.assertLog(true,"Count is changed");
+        LOG.assertLog(countNotChanged,"Count is changed");
         boolean countIsIncreased= emailsCountStart[1]< emailsCount[1];
-        Assert.assertTrue(countIsIncreased,"Count is not increased");
-        LOG.assertLog(true,"Count is not increased");
+        LOG.assertLog(countIsIncreased,"Count is not increased");
     }
     @Test(groups = "InboxTest")
     public void replySentEmail(){
         InboxContext.enterFromUserInSearchOptions();
         String emailBody=InboxContext.replySentEmail();
         InboxContext.openSentSideOption();
-        Assert.assertTrue(InboxContext.emailContainsRepliedEmail());
-        LOG.assertLog(true,"emails do not contain replied email");
+        LOG.assertLog(InboxContext.emailContainsRepliedEmail(),"emails do not contain replied email");
         boolean containsText=emailBody.contains(inboxPage.getRepliedEmailMessageBody());
-        Assert.assertTrue(containsText);
-        LOG.assertLog(true,emailBody+" does not contain email text body");
+        LOG.assertLog(containsText,emailBody+" does not contain email text body");
     }
     @AfterMethod(groups = "InboxTest")
     public void openNewTab(){

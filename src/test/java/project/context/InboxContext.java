@@ -94,7 +94,6 @@ public class InboxContext {
         int [] emailsCount =new int[2];
         inboxPage.waitForDraftsSectionDisplayed();
         builder.moveToElement(InboxPage.getSnoozedLabel()).perform();
-        builder.moveToElement(InboxPage.getSnoozedLabel()).click().build().perform();
         emailsCount[0] = InboxPage.getSnoozedCount();
         builder.moveToElement(InboxPage.getDraftSection()).click().build().perform();
         emailsCount[1] = InboxPage.getDraftsCount();
