@@ -1,4 +1,4 @@
-package test.java.project.tests;
+package project.tests;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import project.configuration.ConfigProperties;
-import test.java.project.pages.BasePage;
+import project.pages.BasePage;
 
 import java.time.Duration;
 public class BaseTest {

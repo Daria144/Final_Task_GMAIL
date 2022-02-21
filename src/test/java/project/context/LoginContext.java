@@ -1,8 +1,8 @@
-package test.java.project.context;
+package project.context;
 import org.apache.log4j.Logger;
-import test.java.project.pages.LoginPage;
+import project.pages.LoginPage;
 
-import static test.java.project.tests.BaseTest.driver;
+import static project.tests.BaseTest.driver;
 
 public class LoginContext {
     public static LoginPage loginPage = new LoginPage(driver);

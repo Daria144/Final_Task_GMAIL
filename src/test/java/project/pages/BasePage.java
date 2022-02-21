@@ -1,4 +1,4 @@
-package test.java.project.pages;
+package project.pages;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

@@ -1,6 +1,6 @@
 <suite name="GmailSuite" verbose="1">
     <listeners>
-        <listener class-name="test.java.project.utils.ListenerTestsClass"/>
+        <listener class-name="project.utils.ListenerTestsClass"/>
     </listeners>
     <test name="Group of login Test">
         <groups>
@@ -16,8 +16,8 @@
             </run>
         </groups>
         <classes>
-            <class name="test.java.project.tests.LoginTest"/>
-            <class name="test.java.project.tests.InboxTest"/>
+            <class name="project.tests.LoginTest"/>
+            <class name="project.tests.InboxTest"/>
         </classes>
     </test>
 </suite>

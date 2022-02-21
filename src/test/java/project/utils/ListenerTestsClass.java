@@ -1,8 +1,8 @@
-package test.java.project.utils;
+package project.utils;
 import org.apache.log4j.Logger;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import test.java.project.context.LoginContext;
+import project.context.LoginContext;
 
 public class ListenerTestsClass implements ITestListener {
     public static Logger log= Logger.getLogger(LoginContext.class);

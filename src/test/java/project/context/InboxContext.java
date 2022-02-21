@@ -1,11 +1,11 @@
-package test.java.project.context;
+package project.context;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import project.configuration.TestDataProperties;
-import test.java.project.pages.InboxPage;
+import project.pages.InboxPage;
 import project.utils.StringUtils;
 import java.util.List;
-import static test.java.project.tests.BaseTest.driver;
+import static project.tests.BaseTest.driver;
 
 public class InboxContext {
     public static InboxPage inboxPage = new InboxPage(driver);
