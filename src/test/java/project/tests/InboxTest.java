@@ -1,5 +1,6 @@
 package project.tests;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.UnhandledAlertException;
@@ -9,43 +10,47 @@ import project.configuration.ConfigProperties;
 import project.configuration.TestDataProperties;
 import project.context.InboxContext;
 import project.context.LoginContext;
-import project.pages.BasePage;
-
-import java.time.Duration;
+import project.pages.InboxPage;
 import java.util.ArrayList;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 import static project.context.InboxContext.inboxPage;
 
 public class InboxTest extends BaseTest {
+    private static Logger LOG = Logger.getLogger(InboxTest.class);
     @BeforeClass
-    public void userIsLoggedIn(){
-        LoginContext.logInPressingEnter(TestDataProperties.getTestData("login"),TestDataProperties.getTestData("password"));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(25));
+    public void userLoggedIn(){
+        InboxPage.clickOnChooseUserAccount();
+        LoginContext.userLabelIsDisplayed();
     }
     @AfterClass(alwaysRun = true)
     public void driverQuit(){
+        LOG.info("Driver turned down");
         turnDown();
     }
-    @Test(enabled = false)
+    @Test(priority = 2)
     public void allEmailOptionsAreAvailable(){
         inboxPage.selectFirstEmail();
-        Assert.assertTrue(elementsAreClickable(inboxPage.emailDialogOptions()));
+        Assert.assertTrue(elementsAreClickable(inboxPage.emailDialogOptions()),"Elements are not clickable");
+        LOG.assertLog(elementsAreClickable(inboxPage.emailDialogOptions()),"Email options are not clickable");
     }
-    @Test(enabled = false)
+    @Test(priority = 2)
     public void allEmailPopupOptionsAreAvailable(){
         inboxPage.clickOnComposeButton();
         Assert.assertTrue(elementsAreClickable(inboxPage.getOptionsToBeClickable()));
+        LOG.assertLog(elementsAreClickable(inboxPage.getOptionsToBeClickable()),"Email popup options are not clickable");
+
     }
     @Test
     public void searchForEmailWithKeyword(){
         inboxPage.setKeywordInSearchField(TestDataProperties.getTestData("keyword"));
         Assert.assertTrue(InboxContext.searchResultsContainsKeyword(),"Keyword is missed");
+        LOG.assertLog(InboxContext.searchResultsContainsKeyword(),"Keyword is missed");
+
     }
     @Test
     public void enterFromUserInSearchOptions(){
         InboxContext.enterFromUserInSearchOptions();
-        Assert.assertTrue(InboxContext.emailSendersContainsEnteredEmail());
+        Assert.assertTrue(InboxContext.emailSendersContainsEnteredEmail(),"Senders are no as in search query");
+        LOG.assertLog(InboxContext.emailSendersContainsEnteredEmail(),"Senders are no as in search query");
     }
     @Test
     public void emailIsSentAndThenRead(){
@@ -53,32 +58,38 @@ public class InboxTest extends BaseTest {
         InboxContext.sentEmailToCurrentUser();
         int readCountIncreased=InboxContext.getReadCount();
         boolean countIsIncreased=readCountStart<readCountIncreased;
-        Assert.assertTrue(countIsIncreased,"count is increased");
+        Assert.assertTrue(countIsIncreased,"count is not  increased: "+readCountStart+"!<"+readCountIncreased);
+        LOG.assertLog(true,"count is not  increased: "+readCountStart+"!<"+readCountIncreased);
         inboxPage.openFirstEmailInList();
         int readCountDecreased=InboxContext.getReadCount();
         boolean countIsDecreased=readCountIncreased>readCountDecreased;
-        Assert.assertTrue(countIsDecreased,"count is decreased");
+        Assert.assertTrue(countIsDecreased,"count is not decreased: "+readCountIncreased+"!>"+readCountDecreased);
+        LOG.assertLog(true,"count is not decreased: "+readCountIncreased+"!>"+readCountDecreased);
     }
     @Test
     public void searchForEmailWithAttachment(){
         InboxContext.searchForEmailWithAttachment();
-        Assert.assertTrue(InboxContext.emailContainsAttachment());
+        Assert.assertTrue(InboxContext.emailContainsAttachment(),"Emails do not contain attachment");
+        LOG.assertLog(InboxContext.emailContainsAttachment(),"Emails do not contain attachment");
     }
     @Test
     public void sendEmailInFullScreen(){
         InboxContext.sendEmailInFullScreen();
-        Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed());
+        Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed(),"Email in full screen is not sent");
+        LOG.assertLog(inboxPage.popupOfEmailSentIsDisplayed(),"Email in full screen is not sent");
 
     }
     @Test
     public void sendEmailWithNoRecipient(){
         InboxContext.sendEmailWithNoRecipient();
-        Assert.assertTrue(inboxPage.alertMessageIsDisplayed());
+        Assert.assertTrue(inboxPage.alertMessageIsDisplayed(),"Email with no recipient should not be sent");
+        LOG.assertLog(inboxPage.alertMessageIsDisplayed(),"Email with no recipient should not be sent");
     }
     @Test
     public void sendEmailWithNoSubjectAndBody(){
         InboxContext.sendEmailWithNoSubjectAndBody();
-        Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed());
+        Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed(),"Email with no subject and body is not sent");
+        LOG.assertLog(inboxPage.popupOfEmailSentIsDisplayed(),"Email with no subject and body is not sent");
     }
     @Test
     public void addEmailToDraftClickingOnCrossIcon(){
@@ -87,6 +98,7 @@ public class InboxTest extends BaseTest {
         int draftCount=InboxContext.getSnoozedAndDraftsCount()[1];
         boolean countIsIncreased= draftCount > draftCountStart;
         Assert.assertTrue(countIsIncreased,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
+        LOG.assertLog(true,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
     }
     @Test
     public void sendEmailAndClickOnUndoButton(){
@@ -94,48 +106,54 @@ public class InboxTest extends BaseTest {
         InboxContext.addEmailToDraftAndClickOnUndoButton();
         int draftCount=InboxContext.getSnoozedAndDraftsCount()[1];
         boolean countIsIncreased=draftCount>draftCountStart;
-        Assert.assertTrue(countIsIncreased,"Count is not increased");
+        Assert.assertTrue(countIsIncreased,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
+        LOG.assertLog(true,"Start count: "+draftCountStart+"\nActual count: "+draftCount);
     }
     @Test
     public void markedMessageIsAddedToMarkSection(){
         int[] emailCount=InboxContext.markedMessageIsAddedToMarkSection();
         boolean countIsIncreased= emailCount[1] > emailCount[0];
-        Assert.assertTrue(countIsIncreased);
+        Assert.assertTrue(countIsIncreased,"Start count: "+emailCount[0]+"\nActual count: "+emailCount[1]);
+        LOG.assertLog(true,"Start count: "+emailCount[0]+"\nActual count: "+emailCount[1]);
         int newEmailCount=InboxContext.unmarkedMessageIsRemovedFromMarkSection();
         boolean countIsDecreased=newEmailCount<emailCount[1];
-        Assert.assertTrue(countIsDecreased);
-
+        Assert.assertTrue(countIsDecreased,"Start count: "+emailCount[1]+"\nActual count: "+newEmailCount);
+        LOG.assertLog(true,"Start count: "+emailCount[1]+"\nActual count: "+newEmailCount);
     }
-    @Test(priority = 1)
+    @Test
     public void sendEmailInScheduledTime(){
         int scheduleCountStart=InboxContext.getSnoozedAndDraftsCount()[0];
         InboxContext.selectScheduleDate();
         int scheduleCount=InboxContext.getSnoozedAndDraftsCount()[0];
         boolean countIsIncreased= scheduleCount > scheduleCountStart;
-        Assert.assertTrue(countIsIncreased);
-        Assert.assertTrue(InboxContext.scheduledDateIsSetCorrectly());
+        Assert.assertTrue(countIsIncreased,"Start count: "+scheduleCountStart+"\nActual count: "+scheduleCount);
+        LOG.assertLog(true,"Start count: "+scheduleCountStart+"\nActual count: "+scheduleCount);
+        Assert.assertTrue(InboxContext.scheduledDateIsSetCorrectly(),"Schedule date is not set correctly");
+        LOG.assertLog(true,"Schedule date is not set correctly");
+
     }
-    @Test(priority = 1)
+    @Test
     public void sendEmailInScheduleDateAndCLickOnUndoButton(){
         int[] emailsCountStart=InboxContext.getSnoozedAndDraftsCount();
         InboxContext.sendEmailInScheduleDateAndCLickOnUndoButton();
         int[] emailsCount=InboxContext.getSnoozedAndDraftsCount();
         boolean countNotChanged= emailsCountStart[0]== emailsCount[0];
         Assert.assertTrue(countNotChanged,"Count is changed");
+        LOG.assertLog(true,"Count is changed");
         boolean countIsIncreased= emailsCountStart[1]< emailsCount[1];
         Assert.assertTrue(countIsIncreased,"Count is not increased");
+        LOG.assertLog(true,"Count is not increased");
     }
     @Test
     public void replySentEmail(){
         InboxContext.enterFromUserInSearchOptions();
         String emailBody=InboxContext.replySentEmail();
-        //Assert.assertTrue(inboxPage.popupOfEmailSentIsDisplayed());
         InboxContext.openSentSideOption();
         Assert.assertTrue(InboxContext.emailContainsRepliedEmail());
+        LOG.assertLog(true,"emails do not contain replied email");
         boolean containsText=emailBody.contains(inboxPage.getRepliedEmailMessageBody());
         Assert.assertTrue(containsText);
-
-
+        LOG.assertLog(true,emailBody+" does not contain email text body");
     }
     @AfterMethod
     public void openNewTab(){
@@ -143,12 +161,11 @@ public class InboxTest extends BaseTest {
             ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(0));
             driver.get(ConfigProperties.getProperty("loginPageGmail"));
+            LOG.info("Open new tab");
             Assert.assertTrue(LoginContext.userLabelIsDisplayed());
         } catch (UnhandledAlertException f) {
             try {
                 Alert alert = driver.switchTo().alert();
-                String alertText = alert.getText();
-                System.out.println("Alert data: " + alertText);
                 alert.accept();
             } catch (NoAlertPresentException e) {
                 e.printStackTrace();

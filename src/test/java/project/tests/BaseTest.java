@@ -1,26 +1,20 @@
 package project.tests;
-
+import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.*;
 import project.configuration.ConfigProperties;
 import project.pages.BasePage;
-import project.utils.TestNgITestListen;
 
 import java.time.Duration;
-import java.util.ArrayList;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-@Listeners(TestNgITestListen.class)
 public class BaseTest {
     public static WebDriver driver;
-
-    @BeforeTest
+    public static Logger log= Logger.getLogger(BaseTest.class);
+    @BeforeSuite
             (alwaysRun = true)
     public static void launch(){
         System.setProperty(ConfigProperties.getProperty("chromeKey"),ConfigProperties.getProperty("chromedriver"));
@@ -28,8 +22,10 @@ public class BaseTest {
         dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
         driver = new ChromeDriver(dc);
         driver.manage().window().maximize();
+        log.info("Maximize window size");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(25));
         driver.get(ConfigProperties.getProperty("loginPage"));
+        log.info("Login to Gmail");
         waitForDeRedirected();
     }
     public static void waitForDeRedirected(){
@@ -75,7 +71,7 @@ public class BaseTest {
         }
         return allPresent;
     }
-    @AfterTest
+    @AfterSuite
             (alwaysRun = true)
     public void turnDown(){
         driver.quit();

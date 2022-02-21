@@ -1,0 +1,12 @@
+<suite name="AllSuite" verbose="1" >
+    <test name="LogTest" >
+        <classes>
+            <class name="project.tests.LoginTest" />
+        </classes>
+    </test>
+    <test name="InboxTest" >
+        <classes>
+            <class name="project.tests.InboxTest" />
+        </classes>
+    </test>
+</suite>

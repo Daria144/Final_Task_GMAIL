@@ -1,4 +1,4 @@
-package project.pages.InboxPage;
+package project.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -17,8 +17,7 @@ public class InboxPage extends BasePage {
     public InboxPage(WebDriver driver){
         super(driver);
     }
-    Actions actions = new Actions(driver);
-    static WebDriverWait driverWait=new WebDriverWait(driver,30);
+    static WebDriverWait driverWait=new WebDriverWait(driver,40);
 
 
     @FindBy(xpath = "//*[@placeholder=\"Пошук у пошті\"]")
@@ -53,7 +52,8 @@ public class InboxPage extends BasePage {
     private WebElement labelsOption;
     @FindBy(xpath = "(//*[@data-tooltip=\"Більше\"])[1]")
     private WebElement moreOption;
-
+    @FindBy(xpath = "(//form//div[@role=\"link\"])[1]")
+    private static WebElement chooseUserAccount;
     @FindBy(xpath = "//div[@class=\"z0\"]/div[@role=\"button\"]")
     private WebElement composeEmailButton;
     @FindBy(xpath = "//div[@data-message-id]//div[@dir=\"ltr\"]")
@@ -68,7 +68,6 @@ public class InboxPage extends BasePage {
     private static String snoozedDateText;
     @FindBy(xpath = "((//div[@role=\"main\"]//tr[@role=\"row\"])[1]//div[@role=\"link\"]/div/div)[2]")
     private static WebElement snoozedDateInEmail;
-//Send email dialog
     @FindBy(xpath = "//*[contains(@data-tooltip,'На весь екран')]")
     protected static WebElement fullScreen;
     @FindBy(xpath = "//*[contains(@data-tooltip,'Вийти з повноекранного режиму')]")
@@ -109,7 +108,6 @@ public class InboxPage extends BasePage {
     protected static WebElement tommorowMorningSchedule;
     @FindBy(xpath = "((//span[@role=\"heading\"]/../..//div[@role=\"menuitem\"])[1]/div)[2]")
     protected static WebElement scheduleDate;
-    //side menu
     @FindBy(xpath = "(//div[@data-tooltip=\"Вхідні\"]/div/div)[1]")
     private static WebElement inputSection;
     @FindBy(xpath = "//div[@data-tooltip=\"Вхідні\"]/div/div/div")
@@ -146,19 +144,21 @@ public class InboxPage extends BasePage {
     private static WebElement replyButtonInOpenedEmail;
 
 
+    public static void clickOnChooseUserAccount(){
+        driverWait=new WebDriverWait(driver,5);
+        WebElement chooseUserAccount = driverWait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath(" (//form//div[@role=\"link\"])[1]")));
+        chooseUserAccount.click();
+    }
     public void selectFirstEmail(){
         emailFirstSelectCheckbox.click();
     }
     public void openFullScreenDialog(){
         fullScreen.click();
     }
-    public void exitFullScreenDialog(){
-        exitFullScreen.click();
-    }
     public void fillInRecipientField(String login){
         recipientField.click();
         recipientField.sendKeys(login);
-        //recipientField.sendKeys();
     }
     public void fillInEmailBody(String body){
         emailBody.sendKeys(body);
@@ -180,7 +180,7 @@ public class InboxPage extends BasePage {
         composeEmailButton.click();
     }
     public boolean popupOfEmailSentIsDisplayed() {
-        WebDriverWait driverWait=new WebDriverWait(driver,5);
+        driverWait=new WebDriverWait(driver,5);
         WebElement emailPopup = driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"link_undo\"]")));
         return emailPopup.isDisplayed();
@@ -197,6 +197,8 @@ public class InboxPage extends BasePage {
         return draftSection;
     }
     public static int getDraftsCount() {
+        driverWait.until(ExpectedConditions.presenceOfElementLocated(By
+                .xpath("//div[@data-tooltip=\"Чернетки\"]/div/div/div")));
         driverWait.until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//div[@data-tooltip=\"Чернетки\"]/div/div/div")));
         String countText=draftCount.getText();
@@ -270,6 +272,8 @@ public class InboxPage extends BasePage {
         snoozedSection.click();
     }
     public static int getSnoozedCount() {
+        driverWait.until(ExpectedConditions.presenceOfElementLocated(By
+                .xpath("//*[@data-tooltip=\"Заплановано\"]/div")));
         driverWait.until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//*[@data-tooltip=\"Заплановано\"]/div")));
         return Integer.parseInt(snoozedCount.getText());
