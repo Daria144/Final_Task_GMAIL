@@ -22,12 +22,11 @@ public class InboxTest extends BaseTest {
     public void userLoggedIn(){
         InboxPage.clickOnChooseUserAccount();
         LoginContext.userLabelIsDisplayed();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
     }
     @AfterClass(alwaysRun = true)
     public void driverQuit(){
-        LOG.info("Driver turned down");
         turnDown();
+        LOG.info("Driver turned down");
     }
     @Test(priority = 2)
     public void allEmailOptionsAreAvailable(){

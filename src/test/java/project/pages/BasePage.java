@@ -21,9 +21,8 @@ public class BasePage {
             isElementClickable = false;
         }
         return isElementClickable;
-
-
     }
+
 
 
 }

@@ -6,15 +6,12 @@ import static test.java.project.tests.BaseTest.driver;
 
 public class LoginContext {
     public static LoginPage loginPage = new LoginPage(driver);
-    public static Logger log= Logger.getLogger(LoginContext.class);
     /**
      * logging in pressing Enter
      */
     public static void logInPressingEnter(String login, String pwd){
         loginPage.inputLoginAndPressEnter(login);
-        log.info("Login \""+login+"\" + is entered");
         loginPage.inputPasswordAndPressEnter(pwd);
-        log.info("Password \""+pwd+"\" + is entered");
     }
 
     /**
@@ -22,9 +19,7 @@ public class LoginContext {
      */
     public static void logInClickingOnNextButtons(String login, String pwd){
         loginPage.inputLoginAndClickOnNextButton(login);
-        log.info("Login \""+login+"\" + is entered");
         loginPage.inputPasswordAndClickOnNextButton(pwd);
-        log.info("Password \""+pwd+"\" + is entered");
     }
 
     public static boolean userLabelIsDisplayed(){
