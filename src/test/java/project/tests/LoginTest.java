@@ -53,7 +53,6 @@ public class LoginTest extends BaseTest{
         ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(0));
         driver.get(ConfigProperties.getProperty("loginPage"));
-        LOG.info("Open new Tab");
         waitForDeRedirected();
         } catch (UnhandledAlertException f) {
             try {

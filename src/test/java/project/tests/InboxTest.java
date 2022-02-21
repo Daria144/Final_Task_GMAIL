@@ -163,7 +163,6 @@ public class InboxTest extends BaseTest {
             ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(0));
             driver.get(ConfigProperties.getProperty("loginPageGmail"));
-            LOG.info("Open new tab");
             Assert.assertTrue(LoginContext.userLabelIsDisplayed());
         } catch (UnhandledAlertException f) {
             try {
