@@ -20,8 +20,7 @@ public class InboxTest extends BaseTest {
     private static Logger LOG = Logger.getLogger(InboxTest.class);
     @BeforeClass(groups = "InboxTest")
     public void userLoggedIn(){
-        //InboxPage.clickOnChooseUserAccount();
-        LoginContext.logInClickingOnNextButtons(TestDataProperties.getTestData("login"),TestDataProperties.getTestData("password"));
+        InboxPage.clickOnChooseUserAccount();
         LoginContext.userLabelIsDisplayed();
     }
     @AfterClass(alwaysRun = true,groups = "InboxTest")
