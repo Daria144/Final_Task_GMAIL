@@ -27,7 +27,7 @@ public class ListenerTestsClass implements ITestListener {
         // TODO Auto-generated method stub
         log.info(result.getMethod().getMethodName()+":"+"FAILED");
         log.error("Falied error thrown", result.getThrowable());
-        log.info("==============="+"Logging ended for"+" "+result.getMethod().getMethodName()+"==================");
+        log.info("=========="+"Logging ended for"+" "+result.getMethod().getMethodName()+"==========");
 
     }
     @Override
@@ -35,7 +35,7 @@ public class ListenerTestsClass implements ITestListener {
     {
         // TODO Auto-generated method stub
         log.info(result.getMethod().getMethodName()+":"+"SKIPPED");
-        log.info("==============="+"Logging ended for"+" "+result.getMethod().getMethodName()+"==================");
+        log.info("=========="+"Logging ended for"+" "+result.getMethod().getMethodName()+"==========");
 
     }
 }
