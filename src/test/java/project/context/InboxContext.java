@@ -1,6 +1,4 @@
 package test.java.project.context;
-
-import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import project.configuration.TestDataProperties;

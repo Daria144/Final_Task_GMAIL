@@ -169,10 +169,6 @@ public class InboxPage extends BasePage {
     public void clickOnCrossButton(){
         crossButton.click();
     }
-    public String getEmailMessageBodyText(){
-        return emailMessageBody.getText();
-    }
-    public String getEmailBody(){ return emailBody.getText();}
     public void clickOnUndoButton(){
         undoButton.click();
     }
@@ -211,27 +207,10 @@ public class InboxPage extends BasePage {
                         .xpath("(//div[@role=\"main\"]//tr[@role=\"row\"])[1]")));
         emailFirst.click();
     }
-    public WebElement waitForEmailPopupOpenedAndReturnElement(){
-        WebElement emailPopup = driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By
-                        .xpath("//div[@role=\"dialog\"]")));
-        return emailPopup;
-    }
     public void waitForEmailPopupOpened(){
         driverWait
                 .until(ExpectedConditions.presenceOfElementLocated(By
                         .xpath("//div[@role=\"dialog\"]")));
-    }
-    public void waitForEmailBodyOpened(){
-        driverWait
-                .until(ExpectedConditions.presenceOfElementLocated(By
-                        .xpath("//div[@data-message-id]//div[@dir=\"ltr\"]")));
-    }
-    public String getRecipientOfEmail(){
-        return recipientFilledData.getText();
-    }
-    public String getRecipientEmail(){
-        return recipientEmail.getAttribute("email");
     }
     public void clickOnEmailFirstStar(){
         emailFirstStar.click();
@@ -241,9 +220,6 @@ public class InboxPage extends BasePage {
     }
     public void openDraftSection(){
         draftSection.click();
-    }
-    public void openStaredSection(){
-        staredSection.click();
     }
     public List<WebElement> getStaredEmails(){
         List<WebElement> staredEmailList = driver.findElements(By
@@ -273,13 +249,10 @@ public class InboxPage extends BasePage {
     }
     public static int getSnoozedCount() {
         driverWait.until(ExpectedConditions.presenceOfElementLocated(By
-                .xpath("//*[@data-tooltip=\"Заплановано\"]/div")));
+                .xpath("(//*[@data-tooltip=\"Snoozed\"]/div/div)[1]")));
         driverWait.until(ExpectedConditions.elementToBeClickable(By
-                .xpath("//*[@data-tooltip=\"Заплановано\"]/div")));
+                .xpath("(//*[@data-tooltip=\"Snoozed\"]/div/div)[1]")));
         return Integer.parseInt(snoozedCount.getText());
-    }
-    public static String getSnoozedDateText(){
-        return snoozedDateText;
     }
     public void waitForSnoozedPopupIsClosed(){
         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By
@@ -293,6 +266,8 @@ public class InboxPage extends BasePage {
         return snoozedDateInEmail.getText();
     }
     public static WebElement getInputSection() {
+        driverWait.until(ExpectedConditions.presenceOfElementLocated(By
+                .xpath("(//div[@data-tooltip=\"Вхідні\"]/div/div)[1]")));
         driverWait.until(ExpectedConditions.elementToBeClickable(By
                 .xpath("(//div[@data-tooltip=\"Вхідні\"]/div/div)[1]")));
         return inputSection;
@@ -306,6 +281,9 @@ public class InboxPage extends BasePage {
         return snoozedSection;
     }
     public static WebElement getDraftSection(){
+        driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By
+                        .xpath("(//div[@data-tooltip=\"Чернетки\"]/div/div)[1]")));
         driverWait
                 .until(ExpectedConditions.elementToBeClickable(By
                         .xpath("(//div[@data-tooltip=\"Чернетки\"]/div/div)[1]")));
@@ -453,6 +431,12 @@ public class InboxPage extends BasePage {
         return composeEmailButton;
     }
     public static WebElement getSnoozedLabel(){
+        driverWait
+                .until(ExpectedConditions.presenceOfElementLocated(By
+                        .xpath("(//*[@data-tooltip=\"Заплановано\"]/div/div)[1]")));
+        driverWait
+                .until(ExpectedConditions.elementToBeClickable(By
+                        .xpath("(//*[@data-tooltip=\"Заплановано\"]/div/div)[1]")));
         return snoozedLabel;
     }
 }
