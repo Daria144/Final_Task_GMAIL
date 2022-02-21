@@ -1,4 +1,4 @@
-package project.pages;
+package test.java.project.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

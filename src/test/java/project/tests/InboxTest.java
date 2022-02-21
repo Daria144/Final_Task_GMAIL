@@ -1,4 +1,4 @@
-package project.tests;
+package test.java.project.tests;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -8,11 +8,13 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import project.configuration.ConfigProperties;
 import project.configuration.TestDataProperties;
-import project.context.InboxContext;
-import project.context.LoginContext;
-import project.pages.InboxPage;
+import test.java.project.context.InboxContext;
+import test.java.project.context.LoginContext;
+import test.java.project.pages.InboxPage;
+
+import java.time.Duration;
 import java.util.ArrayList;
-import static project.context.InboxContext.inboxPage;
+import static test.java.project.context.InboxContext.inboxPage;
 
 public class InboxTest extends BaseTest {
     private static Logger LOG = Logger.getLogger(InboxTest.class);
@@ -20,6 +22,7 @@ public class InboxTest extends BaseTest {
     public void userLoggedIn(){
         InboxPage.clickOnChooseUserAccount();
         LoginContext.userLabelIsDisplayed();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
     }
     @AfterClass(alwaysRun = true)
     public void driverQuit(){

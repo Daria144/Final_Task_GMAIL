@@ -1,4 +1,4 @@
-package project.pages;
+package test.java.project.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -8,7 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import project.pages.BasePage;
+import test.java.project.pages.BasePage;
 
 import java.util.List;
 

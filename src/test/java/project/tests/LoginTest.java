@@ -1,4 +1,4 @@
-package project.tests;
+package test.java.project.tests;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -8,13 +8,11 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import project.configuration.ConfigProperties;
 import project.configuration.TestDataProperties;
-import project.context.LoginContext;
-import project.pages.LoginPage;
-import project.utils.ListenerTestsClass;
-
+import test.java.project.context.LoginContext;
+import test.java.project.pages.LoginPage;
+import test.java.project.utils.ListenerTestsClass;
 import java.util.ArrayList;
-
-import static project.context.LoginContext.loginPage;
+import static test.java.project.context.LoginContext.loginPage;
 @Listeners(ListenerTestsClass.class)
 public class LoginTest extends BaseTest{
     private static Logger LOG = Logger.getLogger(LoginTest.class);

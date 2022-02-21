@@ -1,4 +1,7 @@
-package project.tests;
+package test.java.project.tests;
+
+import jdk.javadoc.internal.doclets.toolkit.BaseConfiguration;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -6,9 +9,10 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
 import project.configuration.ConfigProperties;
-import project.pages.BasePage;
+import test.java.project.pages.BasePage;
 
 import java.time.Duration;
 public class BaseTest {
@@ -17,6 +21,7 @@ public class BaseTest {
     @BeforeSuite
             (alwaysRun = true)
     public static void launch(){
+        BasicConfigurator.configure();
         System.setProperty(ConfigProperties.getProperty("chromeKey"),ConfigProperties.getProperty("chromedriver"));
         DesiredCapabilities dc = new DesiredCapabilities();
         dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);

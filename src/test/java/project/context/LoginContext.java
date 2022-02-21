@@ -1,17 +1,8 @@
-package project.context;
-
-import org.apache.log4j.BasicConfigurator;
+package test.java.project.context;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.testng.annotations.BeforeMethod;
-import project.configuration.TestDataProperties;
-import project.pages.BasePage;
-import project.pages.LoginPage;
-import project.utils.ListenerTestsClass;
+import test.java.project.pages.LoginPage;
 
-import static project.tests.BaseTest.driver;
+import static test.java.project.tests.BaseTest.driver;
 
 public class LoginContext {
     public static LoginPage loginPage = new LoginPage(driver);

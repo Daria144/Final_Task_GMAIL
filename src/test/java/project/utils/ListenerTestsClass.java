@@ -1,21 +1,11 @@
-package project.utils;
-
-import org.apache.log4j.BasicConfigurator;
+package test.java.project.utils;
 import org.apache.log4j.Logger;
-import org.testng.ITestClass;
-import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import project.context.LoginContext;
+import test.java.project.context.LoginContext;
 
 public class ListenerTestsClass implements ITestListener {
     public static Logger log= Logger.getLogger(LoginContext.class);
-    @BeforeSuite
-    public void config(){
-        BasicConfigurator.configure();
-    }
     @Override
     public void onTestStart(ITestResult result)
     {
