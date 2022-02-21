@@ -1,6 +1,5 @@
 package test.java.project.tests;
 
-import jdk.javadoc.internal.doclets.toolkit.BaseConfiguration;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -28,7 +27,7 @@ public class BaseTest {
         driver = new ChromeDriver(dc);
         driver.manage().window().maximize();
         log.info("Maximize window size");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(25));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.get(ConfigProperties.getProperty("loginPage"));
         log.info("Login to Gmail");
         waitForDeRedirected();

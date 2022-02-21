@@ -1,12 +1,15 @@
-<suite name="AllSuite" verbose="1" >
-    <test name="LogTest" >
+<suite name="LoginSuite" verbose="1">
+    <test name="Group of login Test">
+        <groups>
+            <define name="include-group">
+                <include name="LoginTest" />
+            </define>
+            <run>
+                <include name="include-group" />
+            </run>
+        </groups>
         <classes>
-            <class name="test.java.project.tests.LoginTest" />
-        </classes>
-    </test>
-    <test name="InboxTest" >
-        <classes>
-            <class name="test.java.project.tests.InboxTest" />
+            <class name="test.java.project.tests.LoginTest"/>
         </classes>
     </test>
 </suite>
