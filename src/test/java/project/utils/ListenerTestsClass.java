@@ -10,7 +10,7 @@ public class ListenerTestsClass implements ITestListener {
     public void onTestStart(ITestResult result)
     {
         // TODO Auto-generated method stub
-        log.info("==============="+"Logging started for"+" "+result.getMethod().getMethodName()+"==================");
+        log.info("=========="+"Logging started for"+" "+result.getMethod().getMethodName()+"==========");
         log.info(result.getMethod().getMethodName()+":"+"STARTED");
     }
     @Override
@@ -18,7 +18,7 @@ public class ListenerTestsClass implements ITestListener {
     {
         // TODO Auto-generated method stub
         log.info(result.getMethod().getMethodName()+":"+"PASSED");
-        log.info("==============="+"Logging ended for"+" "+result.getMethod().getMethodName()+"==================");
+        log.info("=========="+"Logging ended for"+" "+result.getMethod().getMethodName()+"==========");
 
     }
     @Override
