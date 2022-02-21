@@ -1,4 +1,7 @@
 <suite name="GmailSuite" verbose="1">
+    <listeners>
+        <listener class-name="test.java.project.utils.ListenerTestsClass"/>
+    </listeners>
     <test name="Group of login Test">
         <groups>
             <define name="login">

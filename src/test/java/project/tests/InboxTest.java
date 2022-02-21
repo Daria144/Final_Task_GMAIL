@@ -31,14 +31,14 @@ public class InboxTest extends BaseTest {
     @Test(priority = 2,groups = "InboxTest")
     public void allEmailOptionsAreAvailable(){
         inboxPage.selectFirstEmail();
-        Assert.assertTrue(elementsAreClickable(inboxPage.emailDialogOptions()),"Elements are not clickable");
-        LOG.assertLog(elementsAreClickable(inboxPage.emailDialogOptions()),"Email options are not clickable");
+        Assert.assertTrue(elementsAreDisplayed(inboxPage.emailDialogOptions()),"Elements are not displayed");
+        LOG.assertLog(elementsAreDisplayed(inboxPage.emailDialogOptions()),"Email options are not displayed");
     }
     @Test(priority = 2,groups = "InboxTest")
     public void allEmailPopupOptionsAreAvailable(){
         inboxPage.clickOnComposeButton();
-        Assert.assertTrue(elementsAreClickable(inboxPage.getOptionsToBeClickable()));
-        LOG.assertLog(elementsAreClickable(inboxPage.getOptionsToBeClickable()),"Email popup options are not clickable");
+        Assert.assertTrue(elementsAreDisplayed(inboxPage.getOptionsToBeClickable()));
+        LOG.assertLog(elementsAreDisplayed(inboxPage.getOptionsToBeClickable()),"Email popup options are not clickable");
 
     }
     @Test(groups = "InboxTest")
